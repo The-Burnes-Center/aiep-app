@@ -25,12 +25,12 @@ export default buildConfig({
   editor: slateEditor({}),
   cors: [
     '*',
-    `${process.env.PAYLOAD_PUBLIC_MAIN_URL}`
+    'http://app-backend:8000'
   ],
   collections: [Users, Media, Jobs],
   csrf: [
     'a-iep.org',
-    `${process.env.PAYLOAD_PUBLIC_MAIN_URL}`
+    'http://app-backend:8000'
   ],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),

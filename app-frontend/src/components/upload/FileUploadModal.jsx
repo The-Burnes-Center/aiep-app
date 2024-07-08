@@ -96,7 +96,7 @@ export default function FileUploadModal({ modal_id }) {
             />
             <div className='flex-col items-center'>
               <p>Need Help Uploading Your IEP?</p>
-              <p>Contact us at 650.562.6200</p>
+              <p>Contact us at XXX.XXX.XXXX</p>
             </div>
           </div>
         </form>

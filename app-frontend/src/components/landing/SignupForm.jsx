@@ -39,8 +39,8 @@ const SignupForm = () => {
       setFieldErrors({});
       try {
         const response = await signup(formData);
-        if (!response.ok) {
-          const data = await response.json();
+        if (response.detail.errors) {
+          const data = await response.detail;
           setGeneralError(data.message || 'Signup failed');
           if (data.errors) {
             const errors = data.errors.reduce((acc, err) => {

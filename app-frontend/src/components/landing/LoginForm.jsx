@@ -21,9 +21,8 @@ const LoginForm = () => {
       setFieldErrors({});
       try {
         const response = await login(formData);
-        console.log(response)
-        if (!response.ok) {
-          const data = await response.json();
+        if (response.detail) {
+          const data = await response.detail;
           setGeneralError(data.message || 'Login failed');
           if (data.errors) {
             const errors = data.errors.reduce((acc, err) => {

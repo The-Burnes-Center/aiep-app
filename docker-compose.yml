@@ -10,9 +10,10 @@ services:
     environment:
       PAYLOAD_SECRET: ${PAYLOAD_SECRET}
       PAYLOAD_PUBLIC_DATABASE_URI: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017
-      PAYLOAD_PUBLIC_ADMIN_URL: https://{DOMAIN}
-      PAYLOAD_PUBLIC_MAIN_URL: https://{DOMAIN}
+      PAYLOAD_PUBLIC_ADMIN_URL: https://${DOMAIN}
     restart: always
+    networks:
+      - backend-internal
 
   app-frontend:
     build:
@@ -27,6 +28,8 @@ services:
     ports:
       - '3000:3000'
     restart: always
+    networks:
+      - backend-internal
 
   app-backend:
     build:
@@ -40,12 +43,14 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
     restart: always
+    networks:
+      - backend-internal
 
   redis:
     image: redis:6.0
-    command: ["redis-server", "--appendonly", "yes", "--bind", "127.0.0.1"]
-    ports:
-      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes", "--bind", "0.0.0.0"]
+    networks:
+      - backend-internal
 
   mongo:
     image: mongo:latest
@@ -56,6 +61,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    networks:
+      - backend-internal
 
   nginx:
     build:
@@ -73,6 +80,11 @@ services:
       - app-admin
       - app-backend
     restart: always
+    networks:
+      - backend-internal
+
+networks:
+  backend-internal:
 
 volumes:
   data:

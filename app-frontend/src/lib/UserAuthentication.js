@@ -1,71 +1,52 @@
+import axios from 'axios';
 import useUserStore from '../store/userStore';
 
-const cmsBaseRoute = `${process.env.NEXT_PUBLIC_ADMIN_URL}/cms/api`;
+const backendBaseRoute = 'http://localhost:8000/api/auth';
 
 export async function login(formData) {
   try {
-    const response = await fetch(`${cmsBaseRoute}/users/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        email: formData.email,
-        password: formData.password,
-      }),
+    const response = await axios.post(`${backendBaseRoute}/login`, {
+      email: formData.email,
+      password: formData.password,
+    }, {
+      withCredentials: true,
     });
-    const data = await response.json();
-    if (response.ok) {
-      useUserStore.getState().setUserId(data.user.id); // Store user ID in Zustand
-    }
+    const data = response.data;
+    useUserStore.getState().setUserId(data.user.id);
     return response;
   } catch (err) {
-    console.error('Login error:', err);
-    throw err;
+    console.log(response)
+    return response
   }
 }
 
 export async function signup(formData) {
   try {
-    const response = await fetch(`${cmsBaseRoute}/users`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: formData.email,
-        password: formData.password,
-        role: 'user'
-      }),
+    const response = await axios.post(`${backendBaseRoute}/signup`, {
+      email: formData.email,
+      password: formData.password,
+      role: 'user',
+    }, {
+      withCredentials: true,
     });
-    const data = await response.json();
-    if (response.ok) {
-      useUserStore.getState().setUserId(data.user.id); // Store user ID in Zustand
-    }
+    const data = response.data;
+    useUserStore.getState().setUserId(data.user.id);
     return response;
   } catch (err) {
-    console.error('Signup error:', err);
-    throw err;
+    return response
   }
 }
 
 export async function logout() {
   try {
-    const response = await fetch(`${cmsBaseRoute}/users/logout`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    const response = await axios.post(`${backendBaseRoute}/logout`, {}, {
+      withCredentials: true,
     });
-    if (response.ok) {
-      useUserStore.getState().clearUserId(); // Clear user ID from Zustand
+    if (response.status === 200) {
+      useUserStore.getState().clearUserId();
     }
     return response;
   } catch (err) {
-    console.error('Logout error:', err);
-    throw err;
+    return response
   }
 }

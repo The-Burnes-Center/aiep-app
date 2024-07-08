@@ -11,7 +11,6 @@ services:
       PAYLOAD_SECRET: ${PAYLOAD_SECRET}
       PAYLOAD_PUBLIC_DATABASE_URI: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017
       PAYLOAD_PUBLIC_ADMIN_URL: http://localhost:3001
-      PAYLOAD_PUBLIC_MAIN_URL: http://localhost:3000
     restart: always
 
   app-frontend:
@@ -37,6 +36,7 @@ services:
     depends_on:
       - redis
     environment:
+      - PAYLOAD_CMS_URL=http://payload:3001/cms/api
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
     restart: always
@@ -53,7 +53,7 @@ services:
 
   redis:
     image: redis:6.0
-    command: ["redis-server", "--appendonly", "yes", "--bind", "127.0.0.1"]
+    command: ["redis-server", "--appendonly", "yes", "--bind", "0.0.0.0"]
     ports:
       - "6379:6379"
 
