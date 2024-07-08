@@ -8,7 +8,7 @@ export const upload = async (formData) => {
     throw new Error('User ID is not available');
   }
 
-  formData.append('userId', userId);
+  formData.append('userId', userId); // Append the user ID to the FormData
 
   try {
     const response = await axios.post('/api/upload', formData, {

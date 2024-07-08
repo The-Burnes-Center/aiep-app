@@ -14,9 +14,9 @@ services:
       PAYLOAD_PUBLIC_MAIN_URL: http://localhost:3000
     restart: always
 
-  app-main:
+  app-frontend:
     build:
-      context: ./app-main
+      context: ./app-frontend
       dockerfile: Dockerfile
       args:
         - ADMIN_URL=http://localhost:3001
@@ -27,6 +27,29 @@ services:
     ports:
       - '3000:3000'
     restart: always
+
+  app-backend:
+    build:
+      context: ./app-backend
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    restart: always
+
+  celery:
+    build:
+      context: ./app-backend
+      dockerfile: Dockerfile.celery
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
 
   redis:
     image: redis:6.0

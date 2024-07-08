@@ -42,7 +42,7 @@
     "src/components/ChatBotPage.js",
     "src/app/[locale]/workspace/page.js",
     "src/components/GoalCard.js"
-, "tailwind.config.js", "tailwind.config.js"  ],
+, "tailwind.config.js", "tailwind.config.js", "src/app/[locale]/api/upload/route.js", "src/app/api/upload/route.js"  ],
   "exclude": [
     "node_modules"
   ]
