@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from .tasks import long_running_task
 from celery.result import AsyncResult
 
-app = FastAPI()
+app = FastAPI(root_path='/api')
 
 class TaskParams(BaseModel):
     param: str
