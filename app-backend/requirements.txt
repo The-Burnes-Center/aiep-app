@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+celery[redis]
+redis
+pydantic[email]>=2.8.2
+PyPDF2
+python-multipart
+requests
+pdf2image
+openai>=1.43.0
+qdrant-client
+fastembed==0.3.6

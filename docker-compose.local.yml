@@ -1,0 +1,81 @@
+services:
+  app-admin:
+    build:
+      context: ./app-admin
+      dockerfile: Dockerfile
+    ports:
+      - '3001:3000'
+    depends_on:
+      - mongo
+    environment:
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
+      - PAYLOAD_PUBLIC_DATABASE_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017
+      - PAYLOAD_PUBLIC_ADMIN_URL=http://localhost:3001
+    restart: always
+
+  app-frontend:
+    build:
+      context: ./app-frontend
+      dockerfile: Dockerfile
+      args:
+        - ADMIN_URL=http://localhost:3001
+        - OPENAI_API_KEY=${OPENAI_API_KEY}
+        - ASTRA_DB_APPLICATION_TOKEN=${ASTRA_DB_APPLICATION_TOKEN}
+        - ASTRA_DB_ENDPOINT=${ASTRA_DB_ENDPOINT}
+        - ASTRA_DB_NAMESPACE=${ASTRA_DB_NAMESPACE}
+    ports:
+      - '3000:3000'
+    restart: always
+
+  app-backend:
+    build:
+      context: ./app-backend
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    depends_on:
+      - redis
+    environment:
+      - PAYLOAD_CMS_URL=http://payload:3001/cms/api
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    restart: always
+
+  celery:
+    build:
+      context: ./app-backend
+      dockerfile: Dockerfile.celery
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+  redis:
+    image: redis:6.0
+    command: ["redis-server", "--appendonly", "yes", "--bind", "0.0.0.0"]
+    ports:
+      - "6379:6379"
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"  # Expose REST API
+      - "6334:6334"  # Expose gRPC API
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+
+volumes:
+    qdrant_data:
+    mongo_data:
