@@ -11,7 +11,7 @@ app = FastAPI(root_path='/api')
 # Allow CORS for frontend application
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://a-iep.org", "http://app-frontend"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
