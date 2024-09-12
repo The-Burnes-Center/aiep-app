@@ -27,7 +27,7 @@ async def login(response: Response, form_data: LoginForm):
     try:
         res = requests.post(
             "http://app-admin:3000/cms/api/users/login",
-            json=form_data,
+            json=form_data.model_dump_json(),
             headers={"Content-Type": "application/json"},
         )
 
@@ -48,7 +48,7 @@ async def signup(response: Response, form_data: SignupForm):
     try:
         res = requests.post(
             "http://app-admin:3000/cms/api/users",
-            json=form_data.dict(),
+            json=form_data.model_dump_json(),,
             headers={"Content-Type": "application/json"},
         )
 
