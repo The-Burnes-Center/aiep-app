@@ -12,15 +12,12 @@ services:
       - PAYLOAD_PUBLIC_DATABASE_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017
       - PAYLOAD_PUBLIC_ADMIN_URL=https://${DOMAIN}
     restart: always
-    networks:
-      - backend-internal
 
   app-frontend:
     build:
       context: ./app-frontend
       dockerfile: Dockerfile
       args:
-        - ADMIN_URL=https://${DOMAIN}
         - OPENAI_API_KEY=${OPENAI_API_KEY}
         - ASTRA_DB_APPLICATION_TOKEN=${ASTRA_DB_APPLICATION_TOKEN}
         - ASTRA_DB_ENDPOINT=${ASTRA_DB_ENDPOINT}
@@ -28,8 +25,6 @@ services:
     ports:
       - '3000:3000'
     restart: always
-    networks:
-      - backend-internal
 
   app-backend:
     build:
@@ -40,18 +35,25 @@ services:
     depends_on:
       - redis
     environment:
+      - PAYLOAD_CMS_URL=http://payload:3001/cms/api
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     restart: always
-    networks:
-      - backend-internal
+
+  celery:
+    build:
+      context: ./app-backend
+      dockerfile: Dockerfile.celery
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
 
   redis:
     image: redis:6.0
     command: ["redis-server", "--appendonly", "yes", "--bind", "0.0.0.0"]
-    networks:
-      - backend-internal
   
   qdrant:
     image: qdrant/qdrant:latest
@@ -70,8 +72,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-    networks:
-      - backend-internal
 
   nginx:
     build:
@@ -89,11 +89,6 @@ services:
       - app-admin
       - app-backend
     restart: always
-    networks:
-      - backend-internal
-
-networks:
-  backend-internal:
 
 volumes:
     qdrant_data:
