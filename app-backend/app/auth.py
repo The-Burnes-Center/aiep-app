@@ -48,7 +48,7 @@ async def signup(response: Response, form_data: SignupForm):
     try:
         res = requests.post(
             "http://app-admin:3000/cms/api/users",
-            json=form_data.model_dump_json(),,
+            json=form_data.model_dump_json(),
             headers={"Content-Type": "application/json"},
         )
 
