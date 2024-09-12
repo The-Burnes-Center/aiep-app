@@ -30,6 +30,7 @@ const LoginForm = () => {
         } else {
           const data = await response.Error.detail;
           setGeneralError('Login failed, Invalid Username or Password, Please Try Again');
+          console.log(data)
           const errors = data.reduce((acc, err) => {
             const field = err.loc[1];
             acc[field] = err.msg;
