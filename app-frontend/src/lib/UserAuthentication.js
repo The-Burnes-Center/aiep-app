@@ -1,7 +1,7 @@
 import axios from 'axios';
 import useUserStore from '../store/userStore';
 
-const backendBaseRoute = 'http://localhost:8000/api/auth';
+const backendBaseRoute = 'http://app-backend:8000/api/auth';
 
 export async function login(formData) {
   try {
