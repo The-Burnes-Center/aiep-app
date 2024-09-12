@@ -33,6 +33,7 @@ http {
         server app-admin:3000;
     }
 
+
     server {
         listen 443 ssl;
         server_name ${DOMAIN} www.${DOMAIN};
