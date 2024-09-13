@@ -19,6 +19,7 @@ services:
       dockerfile: Dockerfile
       args:
         - OPENAI_API_KEY=${OPENAI_API_KEY}
+        - BACKEND_URL_PREFIX=http://localhost:8000
         - ASTRA_DB_APPLICATION_TOKEN=${ASTRA_DB_APPLICATION_TOKEN}
         - ASTRA_DB_ENDPOINT=${ASTRA_DB_ENDPOINT}
         - ASTRA_DB_NAMESPACE=${ASTRA_DB_NAMESPACE}
@@ -35,6 +36,7 @@ services:
     depends_on:
       - redis
     environment:
+      - FRONTEND_CORS_URL=http://localhost:3000
       - PAYLOAD_CMS_URL=http://payload:3001/cms/api
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0

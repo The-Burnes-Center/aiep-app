@@ -30,12 +30,18 @@ const LoginForm = () => {
         } else {
           const data = await response.Error.detail;
           setGeneralError('Login failed, Invalid Username or Password, Please Try Again');
-          console.log(data)
-          const errors = data.reduce((acc, err) => {
-            const field = err.loc[1];
-            acc[field] = err.msg;
+          const errors = data.errors.reduce((acc, err) => {
+            // Check if the error contains a 'data' field (field-specific errors)
+            if (err.data && Array.isArray(err.data)) {
+              err.data.forEach((fieldError) => {
+                const field = fieldError.field;
+                const message = fieldError.message;
+                acc[field] = message;
+              });
+            }
             return acc;
           }, {});
+
           setFieldErrors(errors);
         }
       } catch (err) {

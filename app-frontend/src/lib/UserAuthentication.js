@@ -1,7 +1,7 @@
 import axios from 'axios';
 import useUserStore from '../store/userStore';
 
-const backendBaseRoute = 'http://a-iep.org/api/auth';
+const backendBaseRoute = `${process.env.NEXT_PUBLIC_BACKEND_URL_PREFIX}/api/auth`;
 
 export async function login(formData) {
   try {

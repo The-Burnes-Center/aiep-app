@@ -1,7 +1,7 @@
 from openai import OpenAI
 from pydantic import BaseModel, Field
 from typing import List, Optional, Union, Literal, Dict, Type
-import re
+import re, os
 
 def extract_from_iep(base64_images: list[str]):
     api_key = os.getenv('OPENAI_API_KEY')

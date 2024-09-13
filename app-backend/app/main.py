@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import os
 
 from .auth import router as auth_router
 from .test import router as test_router
@@ -11,7 +12,7 @@ app = FastAPI(root_path='/api')
 # Allow CORS for frontend application
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://a-iep.org"],
+    allow_origins=[os.getenv('FRONTEND_CORS_URL')],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
