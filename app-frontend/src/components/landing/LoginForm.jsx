@@ -21,32 +21,42 @@ const LoginForm = () => {
       setFieldErrors({});
       try {
         const response = await login(formData);
-        console.log(response)
         if (!response.Error) {
           setIsSuccess(true);
           setTimeout(() => {
             router.push('/portal/home');
           }, 500); // Redirect after 0.5 seconds
         } else {
-          const data = await response.Error.detail;
+          let errors = {};
           setGeneralError('Login failed, Invalid Username or Password, Please Try Again');
-          const errors = data.errors.reduce((acc, err) => {
-            // Check if the error contains a 'data' field (field-specific errors)
-            if (err.data && Array.isArray(err.data)) {
-              err.data.forEach((fieldError) => {
-                const field = fieldError.field;
-                const message = fieldError.message;
+          const data = await response.Error.detail;
+          if (data.errors) {
+            errors = data.errors.reduce((acc, err) => {
+              // Check if the error contains a 'data' field (field-specific errors)
+              if (err.data && Array.isArray(err.data)) {
+                err.data.forEach((fieldError) => {
+                  const field = fieldError.field;
+                  const message = fieldError.message;
+                  acc[field] = message;
+                });
+              }
+              return acc;
+            }, {});
+          } else {
+            errors = data.reduce((acc, err) => {
+              // Extract the field from 'loc' (e.g., ['body', 'email'])
+              if (err.loc && err.loc.length > 1) {
+                const field = err.loc[1]; // 'email' in this case
+                const message = err.msg;
                 acc[field] = message;
-              });
-            }
-            return acc;
-          }, {});
-
+              }
+              return acc;
+            }, {});
+          }
           setFieldErrors(errors);
         }
       } catch (err) {
         console.log("Error Caught")
-        console.log(err)
         setGeneralError('An error occurred. Please try again.');
       }
     };
