@@ -40,7 +40,6 @@ services:
       - PAYLOAD_CMS_URL=http://payload:3001/cms/api
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
     restart: always
 
   celery:
@@ -50,6 +49,7 @@ services:
     depends_on:
       - redis
     environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
 
@@ -58,6 +58,7 @@ services:
     command: ["redis-server", "--appendonly", "yes", "--bind", "0.0.0.0"]
     ports:
       - "6379:6379"
+    user: "redis"
 
   qdrant:
     image: qdrant/qdrant:latest
