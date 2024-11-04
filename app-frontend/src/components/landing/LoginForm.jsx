@@ -25,6 +25,7 @@ const LoginForm = () => {
           setIsSuccess(true);
           setTimeout(() => {
             router.push('/portal/home');
+            router.refresh();
           }, 500); // Redirect after 0.5 seconds
         } else {
           let errors = {};
