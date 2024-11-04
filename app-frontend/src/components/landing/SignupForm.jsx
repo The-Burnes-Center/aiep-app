@@ -126,7 +126,7 @@ const SignupForm = () => {
               <span>{fieldErrors.password}</span>
             </div>
           )}
-          <button type='submit' className="btn btn-wide btn-primary btn-sm p-2">
+          <button type='submit' className="btn btn-wide btn-primary btn-md">
             <h3 className="text-primary-content">Sign Up</h3>
           </button>
         </form>

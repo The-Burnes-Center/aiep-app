@@ -30,7 +30,7 @@ export async function signup(formData) {
     });
     const data = response.data;
     console.log(data)
-    useUserStore.getState().setUserId(data.user.id);
+    useUserStore.getState().setUserId(data.detail.doc.id);
     return response;
   } catch (err) {
     console.log("Error")
