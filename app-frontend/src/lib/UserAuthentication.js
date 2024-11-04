@@ -29,9 +29,11 @@ export async function signup(formData) {
       withCredentials: true,
     });
     const data = response.data;
+    console.log(data)
     useUserStore.getState().setUserId(data.user.id);
     return response;
   } catch (err) {
+    console.log("Error")
     return {"Error": err.response.data};
   }
 }

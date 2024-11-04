@@ -75,7 +75,7 @@ const SignupForm = () => {
       <div>
         <p className="font-bold text-black">Sign Up with Your Email & Password</p>
         {generalError && (
-          <div role="alert" className="alert alert-error">
+          <div role="alert" className="alert alert-error mt-5 text-sm">
             <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -83,7 +83,7 @@ const SignupForm = () => {
           </div>
         )}
         {isSuccess && (
-          <div role="alert" className="alert alert-success">
+          <div role="alert" className="alert alert-success mt-5 text-sm">
             <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -104,7 +104,7 @@ const SignupForm = () => {
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clipRule="evenodd" /></svg>
             <input type="password" name="password" value={formData.password} className="grow" placeholder="Password" onChange={handleChange} />
           </label>
-          <ul className="text-sm list-disc list-inside w-2/3 mt-1 mb-5">
+          <ul className="text-sm list-disc list-inside my-4">
             <li className={passwordValidation.length ? 'text-green-600' : 'text-red-600'}>
               Password must be at least 8 characters long
             </li>
@@ -126,7 +126,7 @@ const SignupForm = () => {
               <span>{fieldErrors.password}</span>
             </div>
           )}
-          <button type='submit' className="btn btn-wide btn-primary btn-xs sm:btn-xs md:btn-sm lg:btn-md my-3 p-2">
+          <button type='submit' className="btn btn-wide btn-primary btn-sm p-2">
             <h3 className="text-primary-content">Sign Up</h3>
           </button>
         </form>
