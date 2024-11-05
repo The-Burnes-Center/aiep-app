@@ -1,5 +1,4 @@
 'use client'
-import FileUploadModal from '@/components/upload/FileUploadModal'
 import { useRouter } from "@/navigation"
 
 export default function TaskCards() {
@@ -8,7 +7,7 @@ export default function TaskCards() {
         {
             title: "Upload & Translate",
             bgRef: "/images/landingicon1.svg",
-            onClick: () => document.getElementById('file-upload').showModal()
+            onClick: () => router.push("/portal/jobs")
         },
         {
             title: "Get Summary",
@@ -38,7 +37,6 @@ export default function TaskCards() {
                     </div>
                 )) }
             </div>
-            <FileUploadModal modal_id={'file-upload'}/>
         </div>
     )
 }

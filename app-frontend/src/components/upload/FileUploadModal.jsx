@@ -3,20 +3,14 @@
 import { useState, useCallback } from 'react';
 import { upload } from '@/lib/JobProcessing';
 import { useDropzone } from 'react-dropzone';
-import { useRouter } from 'next/navigation';
 
 export default function FileUploadModal({ modal_id }) {
-  const router = useRouter();
   const [files, setFiles] = useState([]);
   const [targetLocale, setTargetLocale] = useState('en');
 
   const onDrop = useCallback((acceptedFiles) => {
     setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
   }, []);
-
-  const handleFileChange = (e) => {
-    setFiles((prevFiles) => [...prevFiles, ...Array.from(e.target.files)]);
-  };
 
   const handleDelete = (fileToDelete) => {
     setFiles((prevFiles) => prevFiles.filter(file => file !== fileToDelete));
@@ -26,9 +20,9 @@ export default function FileUploadModal({ modal_id }) {
     e.preventDefault();
     const formData = new FormData();
 
-    // Add files to the form data
+    // Ensure each file is appended with the correct key
     files.forEach(file => {
-      formData.append('files.file', file);
+      formData.append('files', file);
     });
 
     formData.append('targetLocale', targetLocale);
@@ -36,7 +30,6 @@ export default function FileUploadModal({ modal_id }) {
     try {
       const response = await upload(formData);
       console.log('Job created successfully:', response);
-      router.push('/portal/summary')
     } catch (error) {
       console.error('Error creating job:', error);
     }
@@ -48,7 +41,7 @@ export default function FileUploadModal({ modal_id }) {
         <form onSubmit={handleSubmit} className="flex flex-col p-4 bg-white items-center">
           <div className="mt-4">
             <h3 className="block text-gray-700">Upload Files</h3>
-            <DropzoneArea onDrop={onDrop} handleFileChange={handleFileChange} />
+            <DropzoneArea onDrop={onDrop} />
           </div>
           <div className="mt-4">
             <label htmlFor="targetLocale" className="block text-gray-700">Target Locale</label>
@@ -108,7 +101,7 @@ export default function FileUploadModal({ modal_id }) {
   );
 };
 
-const DropzoneArea = ({ onDrop, handleFileChange }) => {
+const DropzoneArea = ({ onDrop }) => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
@@ -116,7 +109,7 @@ const DropzoneArea = ({ onDrop, handleFileChange }) => {
       {...getRootProps()}
       className="mt-3 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer"
     >
-      <input {...getInputProps()} className="sr-only" onChange={handleFileChange} />
+      <input {...getInputProps()} className="sr-only" />
       <div className="flex flex-col space-y-1 text-center items-center">
         <img
           src="/images/uploadicon.svg"
