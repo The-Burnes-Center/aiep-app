@@ -14,15 +14,16 @@ The FastAPI-based backend serves as the middleware between the frontend and CMS.
 
 Here are the key environment variables necessary for configuring the application:
 
-Variable	Description	Format	Required
-MONGO_INITDB_ROOT_USERNAME	MongoDB root username	String	Yes
-MONGO_INITDB_ROOT_PASSWORD	MongoDB root password	String	Yes
-PAYLOAD_SECRET	PayloadCMS secret key	String	Yes
-DOMAIN	The domain for the deployed application (e.g., a-iep.org)	String	Yes
-OPENAI_API_KEY	API key for OpenAI integration	String	Yes
-ASTRA_DB_NAMESPACE	Namespace for AstraDB	String	Yes
-ASTRA_DB_ENDPOINT	Endpoint for AstraDB	URL	Yes
-ASTRA_DB_APPLICATION_TOKEN	Authentication token for AstraDB	String	Yes
+| Variable                      | Description                            | Format  | Required |
+|-------------------------------|---------------------------------------|---------|----------|
+| MONGO_INITDB_ROOT_USERNAME    | MongoDB root username                 | String  | Yes      |
+| MONGO_INITDB_ROOT_PASSWORD    | MongoDB root password                 | String  | Yes      |
+| PAYLOAD_SECRET                | PayloadCMS secret key                 | String  | Yes      |
+| DOMAIN                        | The domain for the deployed application (e.g., a-iep.org) | String | Yes |
+| OPENAI_API_KEY                | API key for OpenAI integration        | String  | Yes      |
+| ASTRA_DB_NAMESPACE            | Namespace for AstraDB                 | String  | Yes      |
+| ASTRA_DB_ENDPOINT             | Endpoint for AstraDB                  | URL     | Yes      |
+| ASTRA_DB_APPLICATION_TOKEN    | Authentication token for AstraDB      | String  | Yes      |
 
 Ensure these variables are configured properly in your environment before deploying or running the app locally.
 
